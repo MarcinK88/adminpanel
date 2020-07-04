@@ -53,17 +53,18 @@ export default class Usertable extends React.Component {
         // console.log("age: ",e.srcElement[2].value);
         // console.log("city: ",e.srcElement[3].value);
 
-        let userToSave = {
-            id: 30,
+        let hero = {
+            id: e.srcElement[0].value,
             name: e.srcElement[1].value,
             age: e.srcElement[2].value,
-            city: e.srcElement[3].value,
-            ranked: 0
+            city: e.srcElement[3].value
         }
 
-        axios.post(`http://localhost:8080/hero/add`, userToSave, {
-            withCredentials: false
-        })
+        axios.post(`http://localhost:8080/hero/add`, hero, {
+            headers: {
+              'Content-Type': "application/json"
+            }
+          })
             .then((response) => {
                 console.log("resp: ", response);
             }, (error) => {
