@@ -2,6 +2,12 @@ import React from 'react'
 import axios from "axios";
 import Form from './components/Form'
 
+// const CSRF_TOKEN = document.cookie.match(new RegExp(`XSRF-TOKEN=([^;]+)`))[1];
+// const instance = axios.create({
+//   headers: { "X-XSRF-TOKEN": CSRF_TOKEN }
+// });
+// export const AXIOS = instance;
+
 export default class Usertable extends React.Component {
 
     state = {
@@ -30,14 +36,44 @@ export default class Usertable extends React.Component {
 
 
 
-    toggle(user){
+    toggle(user) {
         // Create a new "on" state to mount the Portal component via the button
         this.setState({
             on: !this.state.on,
             selectedUser: user
         });
-        
+
     };
+
+    editUser = (e) => {
+
+        
+        // console.log("id: ",e.srcElement[0].value);
+        // console.log("name: ",e.srcElement[1].value);
+        // console.log("age: ",e.srcElement[2].value);
+        // console.log("city: ",e.srcElement[3].value);
+
+        let userToSave = {
+            id: 30,
+            name: e.srcElement[1].value,
+            age: e.srcElement[2].value,
+            city: e.srcElement[3].value,
+            ranked: 0
+        }
+
+        axios.post(`http://localhost:8080/hero/add`, userToSave, {
+            withCredentials: false
+        })
+            .then((response) => {
+                console.log("resp: ", response);
+            }, (error) => {
+                console.log("error: ", error);
+            });
+
+
+        // console.log(userToSave);
+        // console.log("id: ", e.submit.srcElement[0].value);
+    }
 
 
     render() {
@@ -102,7 +138,7 @@ export default class Usertable extends React.Component {
                                         <td>
                                             <button className="btn btn-success" onClick={() => {
                                                 this.toggle(user);
-                                                
+
                                             }
                                             }>Edit</button>
                                         </td>
@@ -112,7 +148,7 @@ export default class Usertable extends React.Component {
 
                                 }
 
-                                {this.state.on ?  <Form user = {this.state.selectedUser} />  : null}
+                                {this.state.on ? <Form user={this.state.selectedUser} editUser={this.editUser} /> : null}
 
 
 

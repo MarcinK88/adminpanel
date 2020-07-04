@@ -32,15 +32,13 @@ export default class Form extends React.PureComponent {
         this.divMain.innerText = "Edit user";
         //form
         let form = this.externalWindow.document.createElement('form');
+        form.onsubmit = this.props.editUser;
         //div
         let div1 = this.externalWindow.document.createElement('div', {className: 'form-group'});
         let div2 = this.externalWindow.document.createElement('div', {className: 'form-group'});  
         let div3 = this.externalWindow.document.createElement('div', {className: 'form-group'});
         let div4 = this.externalWindow.document.createElement('div', {className: 'form-group'});
         //label
-        let label1 = this.externalWindow.document.createElement('label', {for: 'id', innerText: 'ID'});
-        label1.for = 'id';
-        label1.innerText = 'ID';
         let label2 = this.externalWindow.document.createElement('label');
         label2.for = 'name';
         label2.innerText = 'Name';
@@ -52,7 +50,7 @@ export default class Form extends React.PureComponent {
         label4.innerText = 'City';
         //input
         let input1 = this.externalWindow.document.createElement('input');
-        input1.type = 'text';
+        input1.type = 'hidden';
         input1.className = 'form-control';
         input1.id = 'id';
         input1.value = this.props.user.id;
@@ -79,7 +77,6 @@ export default class Form extends React.PureComponent {
         button.innerText='Submit';
 
         //add form elements
-        div1.appendChild(label1);
         div2.appendChild(label2);
         div3.appendChild(label3);
         div4.appendChild(label4);
