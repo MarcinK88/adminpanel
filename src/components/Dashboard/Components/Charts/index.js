@@ -7,43 +7,69 @@ export default function (props) {
 
   const [users, setUsers] = useState([]);
   const [dataUsers, setDataUsers] = useState([]);
-  
+
 
   useEffect(() => {
-  axios.get(`http://localhost:8080/hero/heroes`)
-    .then(res => {
-      setUsers(res.data)
-    })
+    axios.get(`http://localhost:8080/hero/heroes`)
+      .then(res => {
+        setUsers(res.data)
+      })
 
 
 
-  },[])
+  }, [])
 
   useEffect(() => {
-    users.map(user => (
-      dataUsers.push([user.city,1,user.name])
-    ))  
-    },[users])
+    const newDataUser = users.map(user => [user.city, 1, user.name])
+    setDataUsers(newDataUser);
+  }, [users])
 
 
 
   console.log("DATAUSERS", dataUsers)
 
+  const options = {
+    legend: {
+      display: true
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          max: 10,
+          min: 0,
+          stepSize: 1
+        }
+      }]
+    },
+
+  }
 
   const data = React.useMemo(
     () => [
       {
         label: 'Users',
         data: dataUsers,
-      },
+        color: "#4D5360",
+        
+          yAxes: [{
+              ticks: {
+                  max: 5,
+                  min: 0,
+                  gridOffset: 1,
+              }
+          }]
+      
+        }
+      
 
     ],
-    []
+    [dataUsers]
   )
 
   const series = React.useMemo(
     () => ({
-      type: 'bar'
+      type: 'bar',
+      gridOffset: 1,
     }),
     []
   )
@@ -57,15 +83,18 @@ export default function (props) {
   )
 
 
+
+
+
   return (
     <div id="layoutSidenav_content">
       <div className="container"
         style={{
           width: '400px',
-          height: '300px'
+          height: '300px',
         }}
       >
-        <Chart data={data} series={series} axes={axes} tooltip />
+        <Chart data={data} series={series} axes={axes} options={options} tooltip />
       </div>
     </div>
   )
