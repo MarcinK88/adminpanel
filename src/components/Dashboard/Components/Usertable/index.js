@@ -15,32 +15,7 @@ export default class Usertable extends React.Component {
         on: false,
         selectedUser: [],
         loggedUser: '',
-        loginToken: '',
-        login: 'admin',
-        pass: 'admin'
-    }
-
-    setCookie(name, value, time) {
-        var expires = "";
-        if (time) {
-            var date = new Date();
-            date.setTime(date.getTime() + time);
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "") + expires + "; path=/";
-    }
-    getCookie(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    }
-    eraseCookie(name) {
-        document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        loginToken: ''
     }
 
 
@@ -89,7 +64,7 @@ export default class Usertable extends React.Component {
             city: e.srcElement[3].value
         }
 
-        axios.get(`http://localhost:8080/hero/add`, hero, {
+        axios.post(`http://localhost:8080/hero/add`, hero, {
             headers: {
                 'Content-Type': "application/json"
             }
@@ -102,17 +77,7 @@ export default class Usertable extends React.Component {
 
     }
 
-    handleLogin() {
-        axios.post(`http://localhost:8080/hero/login?pass=${this.state.pass}&login=${this.state.login}`,
-            { headers: { 'Content-Type': 'application/json' } })
-            .then(res => {
-                const loginToken = res.data;
-                this.setState({ loginToken: loginToken });
-                this.setCookie("loginToken", loginToken);
 
-            })
-
-    }
 
 
     render() {
@@ -122,13 +87,12 @@ export default class Usertable extends React.Component {
         return (
 
             <div class="card mb-4">
-                <div><button onClick={this.handleLogin.bind(this)}>Login</button>
-                    <div>{this.state.loginToken}</div>
+                <div className='container'>
+                <button className="btn btn-primary" onClick={() => {this.toggle({id: '', name: '', age: '', city: ''}); }} >Add new user</button>
                 </div>
-
                 <div class="card-header">
                     <i class="fas fa-table mr-1"></i>
-                                DataTable Example
+                                User List
                             </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -182,10 +146,7 @@ export default class Usertable extends React.Component {
                                         </td>
                                         <td>
                                             <button className="btn btn-success" onClick={() => {
-                                                this.toggle(user);
-
-                                            }
-                                            }>Edit</button>
+                                                this.toggle(user); }}>Edit</button>
                                         </td>
                                     </tr>
                                 )

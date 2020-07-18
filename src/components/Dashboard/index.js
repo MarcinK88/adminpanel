@@ -15,8 +15,8 @@ export default function () {
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
-                    <Cards />
-                    <Charts />
+                    {/* <Cards /> */}
+                    {/* <Charts /> */}
                     <Usertable />
                     <Footer />
 

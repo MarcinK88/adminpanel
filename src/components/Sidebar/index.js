@@ -1,6 +1,14 @@
 import React from 'react'
+import { Link }  from 'react-router-dom';
 
-export default function () {
+
+export default function Sidebar(props) {
+
+  
+  const cookie = props.getCookie("loginToken");
+  console.log("cookie: " , cookie)
+  const loggedUser = props.getLoggedUser(cookie);
+  console.log("loggeduser: " , loggedUser)
 
     return( 
         
@@ -9,10 +17,10 @@ export default function () {
             <div class="sb-sidenav-menu">
               <div class="nav">
                 <div class="sb-sidenav-menu-heading">Core</div>
-                <a class="nav-link" href="index.html">
+                <Link class="nav-link" to="/">
                   <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
-                            </a>
+                            </Link>
                 <div class="sb-sidenav-menu-heading">Interface</div>
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                   <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -57,10 +65,10 @@ export default function () {
                   </nav>
                 </div>
                 <div class="sb-sidenav-menu-heading">Addons</div>
-                <a class="nav-link" href="charts.html">
+                <Link class="nav-link" to="/charts">
                   <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Charts
-                            </a>
+                            </Link>
                 <a class="nav-link" href="tables.html">
                   <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Tables
@@ -69,7 +77,7 @@ export default function () {
             </div>
             <div class="sb-sidenav-footer">
               <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        {props.getLoggedUser(props.getCookie("loginToken"))}
                     </div>
           </nav>
         </div>
