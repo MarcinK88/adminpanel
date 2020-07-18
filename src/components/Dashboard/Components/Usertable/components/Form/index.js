@@ -29,9 +29,11 @@ export default class Form extends React.PureComponent {
         //create form elements
 
         this.divMain = this.externalWindow.document.createElement('div');
+        this.divMain.className = "container";
         this.divMain.innerText = "Edit user";
         //form
         let form = this.externalWindow.document.createElement('form');
+        form.className = "container";
         form.onsubmit = this.props.editUser;
         //div
         let div1 = this.externalWindow.document.createElement('div', {className: 'form-group'});
