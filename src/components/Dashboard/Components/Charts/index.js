@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import { Chart } from 'react-charts'
+import { Bar, Pie } from 'react-chartjs-2';
 import axios from "axios";
 
 
 export default function (props) {
 
   const [users, setUsers] = useState([]);
-  const [dataUsers, setDataUsers] = useState([]);
+  const [dataUsersCities, setDataUsersCities] = useState([]);
 
 
   useEffect(() => {
@@ -14,87 +15,99 @@ export default function (props) {
       .then(res => {
         setUsers(res.data)
       })
-
-
-
   }, [])
 
   useEffect(() => {
-    const newDataUser = users.map(user => [user.city, 1, user.name])
-    setDataUsers(newDataUser);
+    const newDataUserCities = users.map((user) => user.city)
+    setDataUsersCities(newDataUserCities);
   }, [users])
 
+  const uniqueCities = dataUsersCities.reduce((unique, item) =>
+    unique.includes(item) ? unique : [...unique, item], []
+  )
 
 
-  console.log("DATAUSERS", dataUsers)
+  var uniqueData = [];
+  for (var i = 0; i < dataUsersCities.length; i++) {
+
+    if (uniqueData[uniqueCities.indexOf(dataUsersCities[i])] == null) {
+      uniqueData[uniqueCities.indexOf(dataUsersCities[i])] = 1;
+    } else {
+      uniqueData[uniqueCities.indexOf(dataUsersCities[i])]++;
+    }
+
+  }
 
   const options = {
-    legend: {
-      display: true
-    },
+    maintainAspectRatio: false,
     scales: {
       yAxes: [{
         ticks: {
-          max: 10,
           min: 0,
           stepSize: 1
         }
       }]
     },
-
+    legend: {
+      position: 'bottom'
+    },
   }
+
 
   const data = React.useMemo(
     () => [
       {
-        label: 'Users',
-        data: dataUsers,
-        color: "#4D5360",
-        
-          yAxes: [{
-              ticks: {
-                  max: 5,
-                  min: 0,
-                  gridOffset: 1,
-              }
-          }]
-      
-        }
-      
-
-    ],
-    [dataUsers]
-  )
-
-  const series = React.useMemo(
-    () => ({
-      type: 'bar',
-      gridOffset: 1,
-    }),
-    []
-  )
-
-  const axes = React.useMemo(
-    () => [
-      { primary: true, type: 'ordinal', position: 'bottom' },
-      { position: 'left', type: 'linear', stacked: true }
-    ],
-    []
-  )
-
-
-
-
+        labels: uniqueCities,
+        datasets: [
+          {
+            label: '# of users',
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#FA7432',
+              '#ACD653',
+              '#776534',
+              '#123875',
+              '#EFB7BB',
+              '#CBDCBD'
+            ],
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+            hoverBorderColor: 'rgba(255,99,132,1)',
+            data: uniqueData
+          }
+        ]
+      }], [dataUsersCities])
 
   return (
     <div id="layoutSidenav_content">
-      <div className="container"
-        style={{
-          width: '400px',
-          height: '300px',
-        }}
-      >
-        <Chart data={data} series={series} axes={axes} options={options} tooltip />
+      <div className="row">
+        <div className="container"
+          style={{
+            width: '400px',
+            height: '300px',
+          }}
+        >
+          <Bar
+            data={data[0]}
+            width={100}
+            height={50}
+            options={options}
+          />
+        </div>
+        <div className="container"
+          style={{
+            width: '400px',
+            height: '300px',
+          }}
+        >
+          <Pie data={data[0]}
+            width={100}
+            height={50}
+            options={options} />
+        </div>
       </div>
     </div>
   )
