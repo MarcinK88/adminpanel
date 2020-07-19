@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer } from 'react'
-import { Chart } from 'react-charts'
 import { Bar, Pie } from 'react-chartjs-2';
 import axios from "axios";
 
